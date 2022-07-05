@@ -1,6 +1,9 @@
 const { ApolloServer } = require('apollo-server');
 const { typeDefs } = require('./graphql-types/graphql-types')
-const { BookAPI, AnimalAPI, SearchAPI, CatFactsAPI } = require('./datasources/index')
+const { BookAPI } = require('./datasources/bookAPI')
+const { AnimalAPI } = require('./datasources/animalAPI')
+const { SearchAPI } = require('./datasources/searchAPI')
+const { CatFactAPI } = require('./datasources/catFactAPI')
 
 // console.log(typeDefs);
 
@@ -19,15 +22,20 @@ const resolvers = {
         }
     },
     Mutation: {
-        addBook: (_: any, args: any, context: any) => context.BookAPI.putBook(args.title, args.author),
+        addBook: (_: any, { title, author }: any, { dataSources }: any) => dataSources.BookAPI.putBook(title, author),
     },
     Query: {
-        books: (_: any, __: any, context: any) => context.bookAPI.getBooks(),
-        animals: (_: any, __: any, context: any) => context.animalAPI.getAnimals(),
-        search: (_: any, args: any, context: any) => context.searchAPI.getSearch(args),
-        catFacts: (_: any, __: any, context: any) => context.catFactAPI.getCatFacts(),
+        books: (_: any, __: any, { dataSources }: any) => dataSources.bookAPI.getBooks(),
+        animals: (_: any, __: any, { dataSources }: any) => dataSources.animalAPI.getAnimals(),
+        search: (_: any, { contains }: any, { dataSources }: any) => dataSources.searchAPI.getSearch(contains),
+        catFacts: async (_: any, __: any, { dataSources }: any) => dataSources.catFactAPI.getCatFacts(),
     },
 };
+
+const bookAPI = new BookAPI();
+const animalAPI = new AnimalAPI();
+const searchAPI = new SearchAPI(bookAPI, animalAPI);
+const catFactAPI = new CatFactAPI();
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -38,13 +46,16 @@ const server = new ApolloServer({
     cache: 'bounded',
     dataSources: () => {
         return {
-          bookAPI: new BookAPI(),
-          animalAPI: new AnimalAPI(),
-          searchAPI: new SearchAPI(),
-          catFactsAPI: new CatFactsAPI(),
+            bookAPI: bookAPI,
+            animalAPI: animalAPI,
+            searchAPI: searchAPI,
+            catFactAPI: catFactAPI,
+            // bookAPI: new BookAPI(),
+            // animalAPI: new AnimalAPI(),
+            // searchAPI: searchAPI,
+            // catFactAPI: new CatFactAPI(),
         };
-      },
-    
+    },
 });
 
 // The `listen` method launches a web server.

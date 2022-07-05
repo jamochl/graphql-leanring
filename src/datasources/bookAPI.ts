@@ -1,6 +1,6 @@
 import { Book } from '../types/types';
 
-class BookAPI {
+export class BookAPI {
     books: Book[] = [
         {
             title: 'The Awakening',
@@ -15,6 +15,7 @@ class BookAPI {
     getBooks() : Book[] {
         return this.books;
     }
+
     pushBook(title: string, author: string) : Book {
         const newBook = {
             title: `${title}`,

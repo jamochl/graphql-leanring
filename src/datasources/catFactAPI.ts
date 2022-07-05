@@ -1,19 +1,17 @@
 import { CatFact } from '../types/types';
-import { HTTPDataSource } from 'apollo-datasource-http'
+import { RESTDataSource } from 'apollo-datasource-rest'
 
- 
-export class CatFactAPI {
-    getCatFacts() : CatFact[] {
-        return [];
+export class CatFactAPI extends RESTDataSource {
+    constructor() {
+        // global client options
+        super();
+        this.baseURL = "https://cat-fact.herokuapp.com";
+    }
+    async getCatFacts() : Promise<CatFact> {
+        const data = await this.get(`/facts`, {});
+        const mappedFacts = data.map((catFact: any) => { return { description: catFact.text }});
+        console.log(data);
+        console.log(mappedFacts);
+        return mappedFacts;
     }
 }
-
-// export class CatFactAPI extends HTTPDataSource {
-//     constructor() {
-//         // global client options
-//         super("https://cat-fact.herokuapp.com")
-//     }
-//     async getCatFacts() : Promise<any> {
-//         return this.get(`/facts`, {});
-//     }
-// }

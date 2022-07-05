@@ -1,16 +1,21 @@
 import { SearchResult } from '../types/types';
+import { AnimalAPI } from './animalAPI';
+import { BookAPI } from './bookAPI';
 
 export class SearchAPI {
-    context;
+    bookAPI;
+    animalAPI;
 
-    constructor(context: any) {
-        this.context = context;
+    constructor(bookAPI: BookAPI, animalAPI: AnimalAPI) {
+        this.bookAPI = bookAPI;
+        this.animalAPI = animalAPI;
     }
 
-    getSearch(args: any) : SearchResult[] {
-        const contains: string = args.contains;
-        const animalList = this.context.AnimalAPI.getAnimals();
-        const bookList = this.context.BookAPI.getBooks();
+    getSearch(contains: string) : SearchResult[] {
+        const bookList = this.bookAPI.getBooks();
+        const animalList = this.animalAPI.getAnimals();
+        console.log(`book List: ${bookList}`)
+        console.log(`Animal List: ${animalList}`)
         const allList = [...animalList, ...bookList];
         const searchList : SearchResult[] = [];
         allList.forEach(item => {

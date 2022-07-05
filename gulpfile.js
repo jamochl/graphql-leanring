@@ -5,7 +5,8 @@ function compileTS() {
     return src('src/**/*.ts')
         .pipe(ts({
             noImplicitAny: true,
-            outFile: 'output.js'
+            esModuleInterop: true,
+            // outFile: 'output.js'
         }))
         .pipe(dest('dist/'));
 }

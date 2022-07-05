@@ -2,7 +2,7 @@ import { Animal } from '../types/types';
 
 const randomWords = require('random-words');
 
-export class AnimalsAPI {
+export class AnimalAPI {
     getAnimals() : Animal[] {
         const maxAnimals: number = 10
         const numAnimals: number = Math.floor(Math.random() * maxAnimals)
