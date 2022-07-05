@@ -10,8 +10,6 @@ export class CatFactAPI extends RESTDataSource {
     async getCatFacts() : Promise<CatFact> {
         const data = await this.get(`/facts`, {});
         const mappedFacts = data.map((catFact: any) => { return { description: catFact.text }});
-        console.log(data);
-        console.log(mappedFacts);
         return mappedFacts;
     }
 }
