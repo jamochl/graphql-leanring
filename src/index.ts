@@ -1,9 +1,10 @@
 const { ApolloServer } = require('apollo-server');
 const { typeDefs } = require('./graphql-types/graphql-types')
-const { BookAPI } = require('./datasources/bookAPI')
-const { AnimalAPI } = require('./datasources/animalAPI')
-const { SearchAPI } = require('./datasources/searchAPI')
-const { CatFactAPI } = require('./datasources/catFactAPI')
+const { BookAPI, AnimalAPI, SearchAPI, CatFactAPI } = require('./datasources/index')
+// const { BookAPI } = require('./datasources/bookAPI')
+// const { AnimalAPI } = require('./datasources/animalAPI')
+// const { SearchAPI } = require('./datasources/searchAPI')
+// const { CatFactAPI } = require('./datasources/catFactAPI')
 
 // console.log(typeDefs);
 
